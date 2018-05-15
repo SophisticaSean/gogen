@@ -15,13 +15,15 @@ import (
 
 // Generator produces code to mock an interface
 type Generator struct {
-	name      string
-	ifaceName string
-	namePkg   string
-	inPkg     bool
-	pkg       *types.Package
-	iface     *types.Interface
-	mockTmpl  *template.Template
+	name        string
+	ifaceName   string
+	namePkg     string
+	packagePath string
+
+	inPkg    bool
+	pkg      *types.Package
+	iface    *types.Interface
+	mockTmpl *template.Template
 }
 
 // NewGenerator initializes a Generator that will mock the given interface from the specified package.
@@ -76,7 +78,7 @@ func (g *Generator) SetName(name string) {
 	g.name = name
 }
 
-// Package returns the name of the package containing the mock
+// Package  returns the name of the package containing the mock
 func (g Generator) Package() string {
 	if g.namePkg != "" {
 		return g.namePkg
@@ -92,6 +94,20 @@ func (g *Generator) SetPackage(name string) {
 	g.namePkg = name
 }
 
+// PackagePath returns the go package path of the package containing the interface
+func (g Generator) PackagePath() string {
+	if g.packagePath != "" {
+		return g.packagePath
+	}
+	return ""
+}
+
+// SetPackagePath changes the package containing the mock
+func (g *Generator) SetPackagePath(path string) {
+	g.packagePath = path
+}
+
+// SetInternal sets the internal package bool
 func (g *Generator) SetInternal(inPkg bool) {
 	g.inPkg = inPkg
 }
